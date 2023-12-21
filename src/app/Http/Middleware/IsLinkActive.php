@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\MessageBag;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use function PHPUnit\Framework\throwException;
 
 class IsLinkActive
@@ -30,28 +31,14 @@ class IsLinkActive
         if($request->method() == 'GET')
         {
             $uuid = $request->route('uuid');
-        }
-        else
-        {
+        } else {
             $uuid = $request->uuid;
         }
-        $link = $this->linksService->getByUuid($uuid);
-        if($link){
-            $errors = new MessageBag();
-            $errors->add('linkExpired', 'This Link is expired. You should make new one');
-            if($link->status == false)
-            {
-                return Redirect::route('main.page')->withErrors($errors);
-            }
-            else if((Carbon::now() > $link->expired_at))
-            {
-                $this->linksService->deactivateLinkByUuid($link->link);
-                return Redirect::route('main.page')->withErrors($errors);
-            }
+        $link = $this->linksService->getActiveByUuid($uuid);
+        if(!$link){
+            throw new NotFoundHttpException();
         }
-        else{
-            abort(404);
-        }
+
         return $next($request);
     }
 }

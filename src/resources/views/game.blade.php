@@ -39,15 +39,17 @@
 
                 if (response.error) {
                     htmlContent = `
-                        <h2>${response.error}</h2>
+                        <h2>Sorry! Something went wrong :(</h2>
                     `;
                 }
                 else {
                     htmlContent = `
+                        <div>
                         <h2>${response.result}</h2>
                         <br>
-                        <h2>Your score: ${response.score}</h2>
-                        <h2>Your winnings are: ${response.sumOfWin}</h2>
+                        <p>Your score: ${response.score}</p>
+                        <p>Your winnings are: ${response.sumOfWin}</p>
+                        <div>
                     `;
                 }
 
@@ -76,18 +78,20 @@
 
                 if (response.error) {
                     htmlContent = `
-                        <h2>${response.error}</h2>
+                        <h2>Sorry! Something went wrong :(</h2>
                     `;
                 }
                 else {
-                    for(let i; i <= response.length - 1; i++)
+                    for(let i = 0; i <= response.length - 1; i++)
                     {
                         htmlContent += (`
+                            <div>
                             <br>
                             <h3>${response[i].result ? "Win" : "Lose"}</h3>
-                            <h4>Score: ${response[i].score}</h4>
-                            <h4>Sum Of Win: ${response[i].sum_of_win}</h4>
-                            <h4>Played in ${response[i].created_at}</h4>
+                            <p>Score: ${response[i].score}</p>
+                            <p>Sum Of Win: ${response[i].sum_of_win}</p>
+                            <p>Played in ${response[i].created_at}</p>
+                            <div>
                     `);
                     }
                 }

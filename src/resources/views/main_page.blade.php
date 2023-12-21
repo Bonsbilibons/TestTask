@@ -12,20 +12,17 @@
 
     <h2>Registration</h2>
 
-    <form method="POST" action="{{ route('user.links') }}">
-        @csrf
+    @csrf
+    <label for="username">Username: </label>
+    <input id="username" type="text" name="username">
 
-        <label for="username">Username: </label>
-        <input id="username" type="text" name="username">
+    <br>
 
-        <br>
+    <label for="phonenumber">Phone number: </label>
+    <input id="phonenumber" type="text" name="phonenumber">
 
-        <label for="phonenumber">Phone number: </label>
-        <input id="phonenumber" type="text" name="phonenumber">
-
-        <br>
-        <button type="button" class="register">Log in</button>
-    </form>
+    <br>
+    <button type="button" class="register">Log in</button>
 
     <div class="linkBoard">
 
@@ -44,7 +41,7 @@
     var userId;
     $('.register').on('click', function() {
         $.ajax({
-            url: '{{ route('user.links') }}',
+            url: '{{ route('register') }}',
             type: 'POST',
             data: {
                 username: $('#username').val(),

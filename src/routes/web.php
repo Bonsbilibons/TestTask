@@ -14,7 +14,7 @@ Route::get('/', function () {
 
 Route::get('main', [MainController::class, 'mainPage'])->name('main.page');
 
-Route::post('your-links', [UserController::class, 'register'])->name('user.links');
+Route::post('register', [UserController::class, 'register'])->name('register');
 
 Route::group([
     'as' => 'game.',

@@ -26,9 +26,9 @@ class UserLinksRepository
         return UserLinks::query()->where('user_id', $userId)->where('status', 1)->first();
     }
 
-    public function getByUuid($uuid)
+    public function getActiveByUuid($uuid)
     {
-        return UserLinks::query()->where('link', $uuid)->first();
+        return UserLinks::query()->where('link', $uuid)->where('status', 1)->first();
     }
 
     public function deactivateByUuid($uuid)

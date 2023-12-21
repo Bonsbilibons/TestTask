@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\DTO\Link\CreateLinkDTO;
+use app\DTO\User\UserDTO;
 use App\Models\UserLinks;
 use App\Repositories\UserLinksRepository;
 
@@ -19,6 +20,11 @@ class LinksService
     public function __construct(UserLinksRepository $userLinkRepository)
     {
         $this->userLinkRepository = $userLinkRepository;
+    }
+
+    public function getActiveByUuid($uuid)
+    {
+        return $this->userLinkRepository->getActiveByUuid($uuid);
     }
 
     public function getOrCreateGameLink($userId)
