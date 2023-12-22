@@ -19,8 +19,11 @@ return new class extends Migration
             $table->date('expired_at');
             $table->timestamps();
 
+            $table->index(['link']);
             $table->index(['status']);
             $table->index(['status', 'expired_at']);
+            $table->index(['user_id', 'status']);
+            $table->index(['link', 'status']);
         });
     }
 
