@@ -23,8 +23,7 @@ class UserService
     public function findOrCreate(UserDTO $userDTO): ?User
     {
         $user = ($this->byNumber($userDTO->getPhonenumber()));
-        if(!$user)
-        {
+        if (!$user) {
              return $this->userRepository->create($userDTO);
         }
         return $user;

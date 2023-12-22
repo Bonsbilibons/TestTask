@@ -4,21 +4,21 @@
     <meta charset="utf-8">
     <title>Game Page</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
 <body>
 
 <h2>Game</h2>
 
-<button type="button" class="play_button">Imfeelinglucky</button>
+<button type="button" class="play_button btn btn-warning">Imfeelinglucky</button>
 
 <div class="results_of_game"></div>
 <br>
-<button type="button" class="history_button">History</button>
+<button type="button" class="history_button btn btn-primary">History</button>
 <br>
 <div class="linkBoard">
-    <button type="button" class="create">Create new link</button>
-    <a href="{{ route('link.deactivate', $uuid) }}"><button type="button" class="deactivate">Deactivate this link</button></a>
+    <button type="button" class="create btn btn-success">Create new link</button>
+    <a href="{{ route('link.deactivate', $uuid) }}"><button type="button" class="deactivate btn btn-danger">Deactivate this link</button></a>
 </div>
 <div class="newLink"></div>
 
@@ -43,12 +43,11 @@
             success: function (response) {
                 let htmlContent;
 
-                if (response.error) {
+                if (response.status === 'error ') {
                     htmlContent = `
-                        <h2>${ response.error }</h2>
+                        <h2>${ response.message }</h2>
                     `;
-                }
-                else {
+                } else {
                     htmlContent = `
                         <div>
                         <h2>${response.data.result ? "Win" : "Lose"}</h2>
@@ -82,12 +81,11 @@
             success: function (response) {
                 let htmlContent = '';
 
-                if (response.error) {
+                if (response.status === 'error ') {
                     htmlContent = `
-                        <h2>${response.error}</h2>
+                        <h2>${ response.message }</h2>
                     `;
-                }
-                else {
+                } else {
                     for(let i = 0; i <= response.data.length - 1; i++)
                     {
                         const rawDate = response.data[i].created_at;

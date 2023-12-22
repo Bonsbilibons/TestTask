@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Main Page</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
     <input id="phonenumber" type="text" name="phonenumber">
 
     <br>
-    <button type="button" class="register">Register</button>
+    <button type="button" class="register btn btn-info">Register</button>
 
     <div class="linkBoard"></div>
 
@@ -50,14 +50,22 @@
             },
             "dataType": 'json',
             success: function (response) {
-                uuid = response.link.link;
-                userId = response.user.id;
+                if (response.status === 'error ') {
+                    htmlContent = `
+                        <h2>${ response.message }</h2>
+                    `;
+                } else {
+                    uuid = response.data.link.link;
+                    userId = response.data.user.id;
 
-                var gameUrl = '{{ route("game.main", "uuid" ) }}';
-                gameUrl = gameUrl.replace('uuid', response.link.link);
-                $('.linkBoard').html(`
-                    <a href="${gameUrl}" id="link">Game</a>
+                    var gameUrl = '{{ route("game.main", "uuid" ) }}';
+                    gameUrl = gameUrl.replace('uuid', response.data.link.link);
+                    $('.linkBoard').html(`
+                    <a href="${gameUrl}" id="link">
+                    <button type="button" class="register btn btn-link">Play</button>
+                    </a>
                 `);
+                }
                 console.log(response);
             },
             error: function (error) {

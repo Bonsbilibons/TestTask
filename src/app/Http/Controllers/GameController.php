@@ -33,9 +33,11 @@ class GameController
     public function play(Request $request)
     {
         $user = $this->userService->byActiveLink($request->uuid);
-        if(!$user)
-        {
-            return  ['error' => 'Wrong link'];
+        if(!$user) {
+            return  [
+                'status' => 'error',
+                'message' => 'User not found'
+            ];
         }
         return $this->gameService->play($user);
     }

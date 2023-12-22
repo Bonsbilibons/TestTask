@@ -29,7 +29,7 @@ class GameService
         $result = !($score % 2);
         $sumOfWin = 0;
 
-        if($result) {
+        if ($result) {
             $percent = 10;
             if ($score > 300) {
                 $percent = 30;
@@ -62,7 +62,7 @@ class GameService
         if (!$user) {
             return [
                 'status' => 'error',
-                'error' => 'Wrong Link',
+                'message' => 'Wrong Link',
             ];
         }
         return [

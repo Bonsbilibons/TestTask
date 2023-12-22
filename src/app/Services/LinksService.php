@@ -35,8 +35,7 @@ class LinksService
     public function getOrCreateGameLink($userId): ?UserLink
     {
         $link = ($this->gameLinkByUserId($userId));
-        if(!$link)
-        {
+        if (!$link) {
             return $this->createGameLink($userId);
         }
         return $link;

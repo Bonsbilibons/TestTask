@@ -29,9 +29,12 @@ class UserController
         $userDTO = new UserDTO($request->username, $request->phonenumber);
         $user = $this->userService->findOrCreate($userDTO);
         $link = $this->linksService->getOrCreateGameLink($user->id);
-        return ([
-            'link' => $link,
-            'user' => $user,
-        ]);
+        return [
+            'status' => 'success',
+            'data' => [
+                'link' => $link,
+                'user' => $user,
+            ]
+        ];
     }
 }
