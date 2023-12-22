@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\DTO\Game\GameHistoryDTO;
+use App\Models\User;
 use App\Repositories\GameHistoryRepository;
+use PhpParser\Node\Stmt\Switch_;
 
 class GameService
 {
@@ -21,43 +23,51 @@ class GameService
     }
 
 
-    public function play($uuid)
+    public function play(User $user): array
     {
-        $user = $this->userService->byActiveLink($uuid);
-        if(!$user)
-        {
-            return  ['error' => 'Wrong link'];
-        }
         $score = rand(0, 1000);
         $result = !($score % 2);
-        $sumOfWin = 0.0;
+        $sumOfWin = 0;
+
         if($result) {
-            if($score > 900){
-                $sumOfWin = ($score / 100) * 70;
+            $percent = 10;
+            if ($score > 300) {
+                $percent = 30;
             }
-            else if($score > 600){
-                $sumOfWin = ($score / 100) * 50;
+            if ($score > 600) {
+                $percent = 50;
             }
-            else if($score > 300){
-                $sumOfWin = ($score / 100) * 30;
+            if ($score > 900) {
+                $percent = 70;
             }
-            else if($score <= 300){
-                $sumOfWin = ($score / 100) * 10;
-            }
+            $sumOfWin = ($score / 100) * $percent;
         }
 
         $gameHistoryDTO = new GameHistoryDTO($user->id, $result, $score, $sumOfWin);
         $gameHistory = $this->gameHistoryRepository->create($gameHistoryDTO);
-        return ([
-            'result' => $gameHistory->result ? "Win" : "Lose",
-            'score' => $gameHistory->score,
-            'sumOfWin' => $gameHistory->sum_of_win,
-        ]);
+
+        return [
+            'status' => 'success',
+            'data' => [
+                'result' => $gameHistory->result ? "Win" : "Lose",
+                'score' => $gameHistory->score,
+                'sumOfWin' => $gameHistory->sum_of_win,
+            ]
+        ];
     }
 
-    public function history($uuid)
+    public function history($uuid): array
     {
         $user = $this->userService->byActiveLink($uuid);
-        return $this->gameHistoryRepository->getTheLatest($user->id, 3);
+        if (!$user) {
+            return [
+                'status' => 'error',
+                'error' => 'Wrong Link',
+            ];
+        }
+        return [
+            'status' => 'success',
+            'data' => $this->gameHistoryRepository->getTheLatest($user->id, 3),
+        ];
     }
 }

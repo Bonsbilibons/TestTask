@@ -38,14 +38,10 @@ class CheckLinksExpirationDate extends Command
      */
     public function handle()
     {
-        $links = $this->linksService->getAllActive();
-        foreach ($links as $link)
-        {
-            if(Carbon::now() > $link->expired_at)
-            {
-                $this->linksService->deactivateLinkByUuid($link->uuid);
-                $this->info("Deactivated link with UUID ". $link->uuid);
-            }
+        $links = $this->linksService->getAllExpired();
+        foreach ($links as $link) {
+            $this->linksService->deactivateLinkByUuid($link->uuid);
+            $this->info("Deactivated link with UUID ". $link->uuid);
         }
         $this->info('Done');
     }

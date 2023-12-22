@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('check-links-expiration-date')->hourly();
+        $schedule->command('check-links-expiration-date')->daily();
     }
 
     /**
@@ -22,7 +22,6 @@ class Kernel extends ConsoleKernel
     protected function commands(): void
     {
         $this->load(__DIR__.'/Commands');
-        Commands\CheckLinksExpirationDate::class;
 
         require base_path('routes/console.php');
     }

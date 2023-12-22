@@ -7,7 +7,7 @@ use App\Models\GameHistory;
 
 class GameHistoryRepository
 {
-    public function create(GameHistoryDTO $gameHistoryDTO)
+    public function create(GameHistoryDTO $gameHistoryDTO): ?GameHistory
     {
         $gameHistory = new GameHistory();
         $gameHistory->fill($gameHistoryDTO->getDataAsArray());

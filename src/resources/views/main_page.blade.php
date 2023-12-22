@@ -22,11 +22,9 @@
     <input id="phonenumber" type="text" name="phonenumber">
 
     <br>
-    <button type="button" class="register">Log in</button>
+    <button type="button" class="register">Register</button>
 
-    <div class="linkBoard">
-
-    </div>
+    <div class="linkBoard"></div>
 
     @foreach($errors as $error)
         <h2>{{$error}}</h2>
@@ -59,63 +57,6 @@
                 gameUrl = gameUrl.replace('uuid', response.link.link);
                 $('.linkBoard').html(`
                     <a href="${gameUrl}" id="link">Game</a>
-                    <br>
-                    <button type="button" class="recreate">Recreate link</button>
-                    <button type="button" class="deactivate">Deactivate link</button>
-                `);
-                console.log(response);
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-    });
-
-    $('.linkBoard').on('click', '.deactivate', function() {
-        $.ajax({
-            url: '{{ route('link.deactivate') }}',
-            type: 'POST',
-            data: {
-                uuid: uuid,
-            },
-            headers: {
-                "X-CSRF-TOKEN": CSRF_TOKEN,
-            },
-            "dataType": 'json',
-            success: function (response) {
-                $('#link').remove();
-                $('.deactivate').remove();
-                console.log(response);
-            },
-            error: function (error) {
-                console.error(error);
-            }
-        });
-    });
-
-    $('.linkBoard').on('click', '.recreate', function() {
-        $.ajax({
-            url: '{{ route('link.recreate') }}',
-            type: 'POST',
-            data: {
-                uuid: uuid,
-                userId: userId,
-            },
-            headers: {
-                "X-CSRF-TOKEN": CSRF_TOKEN,
-            },
-            "dataType": 'text',
-            success: function (response) {
-                uuid = response;
-
-                var gameUrl = '{{ route("game.main", "uuid" ) }}';
-                gameUrl = gameUrl.replace('uuid', response);
-
-                $('.linkBoard').html(`
-                    <a href="${gameUrl}" id="link">Game</a>
-                    <br>
-                    <button type="button" class="recreate">Recreate link</button>
-                    <button type="button" class="deactivate">Deactivate link</button>
                 `);
                 console.log(response);
             },

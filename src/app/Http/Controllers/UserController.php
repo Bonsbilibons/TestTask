@@ -24,7 +24,7 @@ class UserController
     }
 
 
-    public function register(Request $request)
+    public function register(Request $request): array
     {
         $userDTO = new UserDTO($request->username, $request->phonenumber);
         $user = $this->userService->findOrCreate($userDTO);

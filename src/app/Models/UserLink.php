@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserLinks extends Model
+class UserLink extends Model
 {
     protected $table = 'user_links';
     public $timestamps = true;
+
+    const STATUS_ACTIVE = 1;
+    const STATUS_INACTIVE = 0;
 
     protected $fillable = [
         'user_id',

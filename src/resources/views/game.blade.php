@@ -13,8 +13,14 @@
 <button type="button" class="play_button">Imfeelinglucky</button>
 
 <div class="results_of_game"></div>
-
+<br>
 <button type="button" class="history_button">History</button>
+<br>
+<div class="linkBoard">
+    <button type="button" class="create">Create new link</button>
+    <a href="{{ route('link.deactivate', $uuid) }}"><button type="button" class="deactivate">Deactivate this link</button></a>
+</div>
+<div class="newLink"></div>
 
 
 <div id="uuid" data-uuid="{{ $uuid }}"></div>
@@ -39,17 +45,17 @@
 
                 if (response.error) {
                     htmlContent = `
-                        <h2>Sorry! Something went wrong :(</h2>
+                        <h2>${ response.error }</h2>
                     `;
                 }
                 else {
                     htmlContent = `
                         <div>
-                        <h2>${response.result}</h2>
+                        <h2>${response.data.result ? "Win" : "Lose"}</h2>
                         <br>
-                        <p>Your score: ${response.score}</p>
-                        <p>Your winnings are: ${response.sumOfWin}</p>
-                        <div>
+                        <p>Your score: ${response.data.score}</p>
+                        <p>Your profit: ${response.data.sumOfWin}</p>
+                        </div>
                     `;
                 }
 
@@ -78,25 +84,53 @@
 
                 if (response.error) {
                     htmlContent = `
-                        <h2>Sorry! Something went wrong :(</h2>
+                        <h2>${response.error}</h2>
                     `;
                 }
                 else {
-                    for(let i = 0; i <= response.length - 1; i++)
+                    for(let i = 0; i <= response.data.length - 1; i++)
                     {
+                        const rawDate = response.data[i].created_at;
+                        let formattedDate = new Date(rawDate).toISOString().split('T')[0];
+                        let formattedTime = new Date(rawDate).toISOString().split('T')[1].split('.')[0];
+
                         htmlContent += (`
                             <div>
                             <br>
-                            <h3>${response[i].result ? "Win" : "Lose"}</h3>
-                            <p>Score: ${response[i].score}</p>
-                            <p>Sum Of Win: ${response[i].sum_of_win}</p>
-                            <p>Played in ${response[i].created_at}</p>
-                            <div>
+                            <h3>${response.data[i].result ? "Win" : "Lose"}</h3>
+                            <p>Score: ${response.data[i].score}</p>
+                            <p>Sum Of Win: ${response.data[i].sum_of_win}</p>
+                            <p>Played in ${ formattedDate + " " + formattedTime }</p>
+                            </div>
                     `);
                     }
                 }
 
                 $('.results_of_game').html(htmlContent);
+                console.log(response);
+            },
+            error: function (error) {
+                console.error(error);
+            }
+        });
+    });
+
+    $('.linkBoard').on('click', '.create', function() {
+        $.ajax({
+            url: '{{ route('link.create') }}',
+            type: 'POST',
+            data: {
+                uuid: uuid,
+            },
+            headers: {
+                "X-CSRF-TOKEN": CSRF_TOKEN,
+            },
+            success: function (response) {
+                if (response.status === 'error') {
+                    $('.newLink').html(`<div>${response.message}</div>`);
+                } else {
+                    $('.newLink').html(`<div><a href="${response.data.link}" target="_blank" id="link">New link</a></div>`);
+                }
                 console.log(response);
             },
             error: function (error) {

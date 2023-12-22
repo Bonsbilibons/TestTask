@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\DTO\Link\CreateLinkDTO;
 use app\DTO\User\UserDTO;
-use App\Models\UserLinks;
+use App\Models\UserLink;
 use App\Repositories\UserLinksRepository;
 
 use Carbon\Carbon;
+use http\Client\Curl\User;
 use Ramsey\Uuid\Uuid;
 
 class LinksService
@@ -22,12 +23,16 @@ class LinksService
         $this->userLinkRepository = $userLinkRepository;
     }
 
-    public function getActiveByUuid($uuid)
+    public function getActiveByUuid($uuid): ?UserLink
     {
         return $this->userLinkRepository->getActiveByUuid($uuid);
     }
+    public function getAllExpired(): array
+    {
+        return $this->userLinkRepository->getAllExpired();
+    }
 
-    public function getOrCreateGameLink($userId)
+    public function getOrCreateGameLink($userId): ?UserLink
     {
         $link = ($this->gameLinkByUserId($userId));
         if(!$link)
@@ -37,28 +42,23 @@ class LinksService
         return $link;
     }
 
-    public function createGameLink($userId)
+    public function createGameLink($userId): ?UserLink
     {
         $createLinkDTO = new CreateLinkDTO($userId, true, Uuid::uuid4()->toString(), Carbon::now()->addDay(7));
         return $this->userLinkRepository->createGameLink($createLinkDTO);
     }
 
-    public function deactivateLinkByUuid($uuid)
+    public function deactivateLinkByUuid($uuid): int
     {
         return $this->userLinkRepository->deactivateByUuid($uuid);
     }
 
-    public function gameLinkByUserId($userId): ?UserLinks
+    public function gameLinkByUserId($userId): ?UserLink
     {
         return $this->userLinkRepository->gameLinkByUserId($userId);
     }
 
-    public function deactivateByUuid($uuid)
-    {
-        $this->userLinkRepository->deactivateByUuid($uuid);
-    }
-
-    public function getAllActive()
+    public function getAllActive(): array
     {
         return $this->userLinkRepository->getAllActive();
     }

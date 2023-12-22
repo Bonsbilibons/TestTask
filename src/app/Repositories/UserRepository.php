@@ -21,7 +21,7 @@ class UserRepository
             ->first();
     }
 
-    public function create(UserDTO $userDTO)
+    public function create(UserDTO $userDTO): ?User
     {
         $user = new User();
         $user->fill($userDTO->getDataAsArray());

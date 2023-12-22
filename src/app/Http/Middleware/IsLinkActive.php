@@ -28,8 +28,7 @@ class IsLinkActive
     public function handle(Request $request, Closure $next)
     {
         $uuid = null;
-        if($request->method() == 'GET')
-        {
+        if($request->method() == 'GET') {
             $uuid = $request->route('uuid');
         } else {
             $uuid = $request->uuid;
