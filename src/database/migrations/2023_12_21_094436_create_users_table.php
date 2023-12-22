@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('username');
             $table->unsignedBigInteger('phonenumber')->unique();
             $table->timestamps();
+
+            $table->index(['phonenumber']);
         });
     }
 

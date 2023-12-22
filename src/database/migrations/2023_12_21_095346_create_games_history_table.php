@@ -18,6 +18,8 @@ return new class extends Migration
             $table->integer('score');
             $table->float('sum_of_win');
             $table->timestamps();
+
+            $table->index(['user_id']);
         });
     }
 

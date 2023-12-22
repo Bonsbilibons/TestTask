@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('link');
             $table->date('expired_at');
             $table->timestamps();
+
+            $table->index(['status']);
+            $table->index(['status', 'expired_at']);
         });
     }
 
