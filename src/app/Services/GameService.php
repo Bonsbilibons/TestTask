@@ -47,12 +47,9 @@ class GameService
         $gameHistory = $this->gameHistoryRepository->create($gameHistoryDTO);
 
         return [
-            'status' => 'success',
-            'data' => [
-                'result' => $gameHistory->result ? "Win" : "Lose",
-                'score' => $gameHistory->score,
-                'sumOfWin' => $gameHistory->sum_of_win,
-            ]
+            'result' => $gameHistory->result ? "Win" : "Lose",
+            'score' => $gameHistory->score,
+            'sumOfWin' => $gameHistory->sum_of_win,
         ];
     }
 

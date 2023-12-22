@@ -39,7 +39,10 @@ class GameController
                 'message' => 'User not found'
             ];
         }
-        return $this->gameService->play($user);
+        return [
+            'status' => 'success',
+            'data' => $this->gameService->play($user)
+        ];
     }
 
     public function history(Request $request): array

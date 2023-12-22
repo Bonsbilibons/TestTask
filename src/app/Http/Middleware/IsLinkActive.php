@@ -34,7 +34,7 @@ class IsLinkActive
             $uuid = $request->uuid;
         }
         $link = $this->linksService->getActiveByUuid($uuid);
-        if(!$link){
+        if (!$link) {
             throw new NotFoundHttpException();
         }
 
